@@ -1,0 +1,44 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #25d22872;
+    padding: 2rem;
+  }
+  
+  .left {
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: block;
+    font-weight: bold;
+    font-size: x-large;
+    text-align: center;
+    margin-top: 0px;
+  }
+  
+  .right {
+    display: flex;
+    flex-direction: row;
+    font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial,
+      sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  }
+
+  .welcome {
+    font-size: 17px;
+    padding: 0.5em 1em;
+    border: transparent;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    background: #25d2282b;
+    color: white;
+    border-radius: 4px;
+  }
+  
+  .welcome:hover {
+    background: rgb(2, 0, 36);
+    background: linear-gradient(
+      90deg,
+      #25d2282b 0%,
+      #25d22800 100%
+    );
+  }
