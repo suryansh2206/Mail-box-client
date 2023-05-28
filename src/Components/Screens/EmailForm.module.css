@@ -1,0 +1,104 @@
+.form {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 10px;
+  width: 800px;
+  margin-left: 20rem;
+  margin-top: 10rem;
+  /* background-color: er; */
+  background-color: #25d2288c;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 30px 30px -30px rgba(27, 26, 26, 0.315);
+}
+
+/* .form .title {
+  color: royalblue;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+.form input {
+  outline: 0;
+  border: 1px solid rgb(219, 213, 213);
+  padding: 8px 14px;
+  border-radius: 8px;
+  width: 95%;
+  height: 50px;
+}
+
+.form textarea {
+  border-radius: 8px;
+  height: 200px;
+  width: 95%;
+  resize: none;
+  outline: 0;
+  padding: 8px 14px;
+  border: 1px solid rgb(219, 213, 213);
+}
+
+.form button {
+  align-self: flex-end;
+  padding: 8px;
+  outline: 0;
+  border: 0;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  background-color: #25d228a1;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.form button:hover {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(90deg, #25d22867 0%, #25d22855 100%);
+}
+
+.container {
+  display: flex;
+
+  height: 75vh; /* adjust this to set the height of the container */
+}
+
+.sidebar {
+  width: 10%;
+  border-right: 4px solid #25d2288c;
+  min-width: 100px;
+  box-sizing: border-box;
+  height: 1000px;
+}
+
+.sidebar div {
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-bottom: 4px solid #25d2288c;
+  cursor: pointer;
+  color: #25d2288c;
+}
+
+.sidebar div:hover {
+  background-color: #25d228b1;
+  color: white;
+}
+
+.navlink {
+  text-decoration: none;
+  color: #333;
+  /* padding: 10px;
+  border-radius: 5px; */
+}
+
+.navlink.active {
+  background-color: #25d228;
+  color: #fff;
+}

@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import classes from "./HomePage.module.css";
 import { useNavigate } from "react-router-dom";
+import EmailForm from "./EmailForm";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const HomePage = () => {
           </button>
         </div>
       </header>
+      <EmailForm />
     </Fragment>
   );
 };
