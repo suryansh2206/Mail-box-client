@@ -18,7 +18,6 @@ const App = () => {
       ) : (
         <>
           <Route path="/" element={<HomePage />} />
-          <Route path="/inbox" element={<Inbox />} />
           <Route path="/sent" element={<Sent />} />
         </>
       )}

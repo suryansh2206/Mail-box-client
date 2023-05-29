@@ -1,19 +1,18 @@
 import { useRef } from "react";
 import classes from "./EmailForm.module.css";
-import { NavLink } from "react-router-dom";
+import { getUsername } from "../../helper";
+import { useDispatch, useSelector } from "react-redux";
+import { uiActions } from "../../Store/ui-slice";
+import { useNavigate } from "react-router-dom";
+import Inbox from "./Inbox";
 
 const EmailForm = () => {
   let username = localStorage.getItem("email") || " ";
-  let t = "";
-  for (let i = 0; i < username.length; i++) {
-    if (username[i] === "." || username[i] === "@") {
-      continue;
-    } else {
-      t += username[i];
-    }
-  }
-  username = t;
-
+  const user = getUsername(username);
+  const navigate = useNavigate();
+  const showForm = useSelector((state) => state.ui.emailForm);
+  const showInbox = useSelector((state) => state.ui.inboxShow);
+  const dispatch = useDispatch();
   const to = useRef();
   const subject = useRef();
   const message = useRef();
@@ -29,7 +28,7 @@ const EmailForm = () => {
       message: enteredMessage,
     };
     fetch(
-      `https://react-http-a080a-default-rtdb.firebaseio.com/emails/${username}.json`,
+      `https://react-http-a080a-default-rtdb.firebaseio.com/${user}/sent/.json`,
       {
         method: "POST",
         body: JSON.stringify(email),
@@ -43,41 +42,77 @@ const EmailForm = () => {
       .then((data) => {
         alert("Email Sent");
         console.log(data, "MESSAGE SENT");
+        to.current.value = "";
+        subject.current.value = "";
+        message.current.value = "";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    const userReceived = getUsername(enteredto);
+    const received_mail = {
+      receiver: userReceived,
+      subject: enteredSubject,
+      message: enteredMessage,
+      sender: user,
+      isOpen: false,
+    };
+    fetch(
+      `https://react-http-a080a-default-rtdb.firebaseio.com/${userReceived}/received/.json`,
+      {
+        method: "POST",
+        body: JSON.stringify(received_mail),
+      }
+    )
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Something went wrong!");
+        } else return res.json();
+      })
+      .then((data) => {
+        console.log(data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+  const toggleEmailFormHandler = () => {
+    dispatch(uiActions.openEmailForm());
+    dispatch(uiActions.closeInbox());
+  };
+
+  const toggleInboxHandler = () => {
+    dispatch(uiActions.openInbox());
+    dispatch(uiActions.closeEmailForm());
+  };
+
   return (
     <>
       <div className={classes.container}>
         <div className={classes.sidebar}>
-          <NavLink to="/" className={classes.navlink} activeClassName="active">
-            <div>Compose</div>
-          </NavLink>
-          <NavLink to="/inbox" className={classes.navlink} activeClassName="active">
-            <div>Inbox</div>
-          </NavLink>
-          <NavLink to="/sent" className={classes.navlink} activeClassName="active">
-            <div>Sent</div>
-          </NavLink>
+          <button onClick={toggleEmailFormHandler}>Compose</button>
+          <button onClick={toggleInboxHandler}>Inbox</button>
+          <button>Sent</button>
         </div>
-        <form className={classes.form} onSubmit={submitHandler}>
-          <input
-            type="text"
-            placeholder="To:"
-            className={classes.input}
-            ref={to}
-          />
-          <input
-            type="text"
-            placeholder="Subject:"
-            className={classes.input}
-            ref={subject}
-          />
-          <textarea placeholder="Your message" ref={message}></textarea>
-          <button>Send</button>
-        </form>
+        {showForm && !showInbox && (
+          <form className={classes.form} onSubmit={submitHandler}>
+            <input
+              type="text"
+              placeholder="To:"
+              className={classes.input}
+              ref={to}
+            />
+            <input
+              type="text"
+              placeholder="Subject:"
+              className={classes.input}
+              ref={subject}
+            />
+            <textarea placeholder="Your message" ref={message}></textarea>
+            <button>Send</button>
+          </form>
+        )}
+        {showInbox && !showForm && <Inbox />}
       </div>
     </>
   );
