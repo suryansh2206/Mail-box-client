@@ -25,15 +25,18 @@ const Inbox = () => {
   }, []);
 
   return (
-    <div className={classes.form}>
-      {inboxMail.map((mail) => (
-        <div className={classes.card} key={mail.key}>
-          <h3>{mail.subject}</h3>
-          <p>{mail.content}</p>
-          <p>From: {mail.sender}</p>
-        </div>
-      ))}
-    </div>
+    <>
+      <div className={classes.form}>
+        {inboxMail.map((mail) => (
+          <div className={classes.card} key={mail.key}>
+            <h4>{mail.subject}</h4>
+            {/* <p>{mail.content}</p> */}
+            <p>From: {mail.sender}</p>
+            {/* <div>Delete</div> */}
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 

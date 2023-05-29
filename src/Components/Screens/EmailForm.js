@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from "../../Store/ui-slice";
 import { useNavigate } from "react-router-dom";
 import Inbox from "./Inbox";
+import Sent from "./Sent";
 
 const EmailForm = () => {
   let username = localStorage.getItem("email") || " ";
@@ -12,6 +13,7 @@ const EmailForm = () => {
   const navigate = useNavigate();
   const showForm = useSelector((state) => state.ui.emailForm);
   const showInbox = useSelector((state) => state.ui.inboxShow);
+  const showSent = useSelector((state) => state.ui.sentShow);
   const dispatch = useDispatch();
   const to = useRef();
   const subject = useRef();
@@ -79,10 +81,18 @@ const EmailForm = () => {
   const toggleEmailFormHandler = () => {
     dispatch(uiActions.openEmailForm());
     dispatch(uiActions.closeInbox());
+    dispatch(uiActions.closeSent());
   };
 
   const toggleInboxHandler = () => {
     dispatch(uiActions.openInbox());
+    dispatch(uiActions.closeEmailForm());
+    dispatch(uiActions.closeSent());
+  };
+
+  const toggleSentHandler = () => {
+    dispatch(uiActions.openSent());
+    dispatch(uiActions.closeInbox());
     dispatch(uiActions.closeEmailForm());
   };
 
@@ -92,9 +102,9 @@ const EmailForm = () => {
         <div className={classes.sidebar}>
           <button onClick={toggleEmailFormHandler}>Compose</button>
           <button onClick={toggleInboxHandler}>Inbox</button>
-          <button>Sent</button>
+          <button onClick={toggleSentHandler}>Sent</button>
         </div>
-        {showForm && !showInbox && (
+        {showForm && !showInbox && !showSent && (
           <form className={classes.form} onSubmit={submitHandler}>
             <input
               type="text"
@@ -112,7 +122,8 @@ const EmailForm = () => {
             <button>Send</button>
           </form>
         )}
-        {showInbox && !showForm && <Inbox />}
+        {showInbox && !showForm && !showSent && <Inbox />}
+        {showSent && !showInbox && !showForm && <Sent />}
       </div>
     </>
   );
