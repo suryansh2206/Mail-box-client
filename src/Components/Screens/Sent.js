@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import classes from "./EmailForm.module.css";
 import { getUsername } from "../../helper";
+import MailSent from "./MailSent";
 
 const Sent = () => {
   const username = localStorage.getItem("email") || " ";
   const user = getUsername(username);
   const [sentMail, setSentMail] = useState([]);
+  const [selectedMail, setSelectedMail] = useState(null);
 
   useEffect(() => {
     fetch(
@@ -24,17 +26,32 @@ const Sent = () => {
       });
   }, []);
 
+  const openMailHandler = (mail) => {
+    setSelectedMail(mail);
+  };
+
+  const handleBack = () => {
+    setSelectedMail(null);
+  };
+
   return (
     <>
       <div className={classes.form}>
-        {sentMail.map((mail) => (
-          <div className={classes.card} key={mail.key}>
-            <h4>{mail.subject}</h4>
-            {/* <p>{mail.content}</p> */}
-            <p>To: {mail.to}</p>
-            {/* <div>Delete</div> */}
-          </div>
-        ))}
+        {selectedMail ? (
+          <MailSent mail={selectedMail} onBack={handleBack} />
+        ) : (
+          sentMail.map((mail) => (
+            <div className={classes.card} key={mail.key}>
+              <h4>{mail.subject}</h4>
+              {/* <p>{mail.content}</p> */}
+              <p>To: {mail.to}</p>
+              <div className={classes.buttons}>
+                <button onClick={() => openMailHandler(mail)}>Open</button>
+                <button>Delete</button>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </>
   );
