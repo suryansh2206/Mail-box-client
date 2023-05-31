@@ -11,7 +11,7 @@ const Inbox = () => {
 
   useEffect(() => {
     fetch(
-      `https://react-http-a080a-default-rtdb.firebaseio.com/${user}/received/.json`
+      `https://mail-box-client-93081-default-rtdb.firebaseio.com/${user}/received/.json`
     )
       .then((res) => res.json())
       .then((data) => {

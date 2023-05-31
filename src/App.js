@@ -4,8 +4,6 @@ import SignUp from "./Components/Auth/SignUp";
 import Login from "./Components/Auth/Login";
 import HomePage from "./Components/Screens/HomePage";
 import ResetPassword from "./Components/Auth/ResetPassword";
-import Inbox from "./Components/Screens/Inbox";
-import Sent from "./Components/Screens/Sent";
 
 const App = () => {
   const isAuth = localStorage.getItem("token");

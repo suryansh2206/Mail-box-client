@@ -16,7 +16,7 @@ const SignUp = () => {
 
     if (enteredPassword === enteredConfirmPassword) {
       fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCY-VGJzQO4PuIAWLAzUqOd4c2XvpMOQFs",
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBHmw3lGCYB7_oP8MCIQRefcOJ7lOgGBiA",
         {
           method: "POST",
           body: JSON.stringify({

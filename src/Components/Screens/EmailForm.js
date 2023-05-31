@@ -3,14 +3,12 @@ import classes from "./EmailForm.module.css";
 import { getUsername } from "../../helper";
 import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from "../../Store/ui-slice";
-import { useNavigate } from "react-router-dom";
 import Inbox from "./Inbox";
 import Sent from "./Sent";
 
 const EmailForm = () => {
   let username = localStorage.getItem("email") || " ";
   const user = getUsername(username);
-  const navigate = useNavigate();
   const showForm = useSelector((state) => state.ui.emailForm);
   const showInbox = useSelector((state) => state.ui.inboxShow);
   const showSent = useSelector((state) => state.ui.sentShow);
@@ -30,7 +28,7 @@ const EmailForm = () => {
       message: enteredMessage,
     };
     fetch(
-      `https://react-http-a080a-default-rtdb.firebaseio.com/${user}/sent/.json`,
+      `https://mail-box-client-93081-default-rtdb.firebaseio.com/${user}/sent/.json`,
       {
         method: "POST",
         body: JSON.stringify(email),
@@ -60,7 +58,7 @@ const EmailForm = () => {
       isOpen: false,
     };
     fetch(
-      `https://react-http-a080a-default-rtdb.firebaseio.com/${userReceived}/received/.json`,
+      `https://mail-box-client-93081-default-rtdb.firebaseio.com/${userReceived}/received/.json`,
       {
         method: "POST",
         body: JSON.stringify(received_mail),
