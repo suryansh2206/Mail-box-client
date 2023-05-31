@@ -102,16 +102,13 @@
   height: 200px;
   z-index: -1;
   border-radius: 50%;
+  top: 100%;
+  left: 100%;
+  transition: 0.3s all;
 }
 
 .sidebar button:hover {
   color: white;
-}
-
-.sidebar button:before {
-  top: 100%;
-  left: 100%;
-  transition: 0.3s all;
 }
 
 .sidebar button:hover::before {
@@ -124,6 +121,7 @@
   color: #fff;
   /* Add any additional styles for the active button here */
 }
+
 
 /* EmailForm.module.css */
 
@@ -210,3 +208,4 @@
 .backButton:hover {
   background-color: #999;
 }
+

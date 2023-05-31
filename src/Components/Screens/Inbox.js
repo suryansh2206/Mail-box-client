@@ -34,6 +34,27 @@ const Inbox = () => {
     setSelectedMail(null);
   };
 
+  const deleteMailHandler = (mailKey) => {
+    // Make a DELETE request to the API to delete the mail
+    fetch(
+      `https://mail-box-client-93081-default-rtdb.firebaseio.com/${user}/received/${mailKey}.json`,
+      {
+        method: "DELETE",
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        // Update the inboxMail state by removing the deleted mail
+        const updatedInboxMail = inboxMail.filter(
+          (mail) => mail.key !== mailKey
+        );
+        setInboxMail(updatedInboxMail);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <div className={classes.form}>
@@ -46,7 +67,9 @@ const Inbox = () => {
               <p>From: {mail.sender}</p>
               <div className={classes.buttons}>
                 <button onClick={() => openMailHandler(mail)}>Open</button>
-                <button>Delete</button>
+                <button onClick={() => deleteMailHandler(mail.key)}>
+                  Delete
+                </button>
               </div>
             </div>
           ))
