@@ -28,6 +28,36 @@ const Inbox = () => {
 
   const openMailHandler = (mail) => {
     setSelectedMail(mail);
+    markAsRead(mail.key); // Mark the selected mail as read
+  };
+
+  const markAsRead = (mailKey) => {
+    // Update the 'read' property in the Firebase database for the specific email
+    fetch(
+      `https://mail-box-client-93081-default-rtdb.firebaseio.com/${user}/received/${mailKey}.json`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          read: true,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const updatedInboxMail = inboxMail.map((mail) => {
+          if (mail.key === mailKey) {
+            return {
+              ...mail,
+              read: true, // Mark the email as read
+            };
+          }
+          return mail;
+        });
+        setInboxMail(updatedInboxMail);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleBack = () => {
@@ -55,15 +85,26 @@ const Inbox = () => {
       });
   };
 
+  // Calculate the count of unread mails
+  const unreadMailCount = inboxMail.reduce(
+    (count, mail) => (mail.read ? count : count + 1),
+    0
+  );
+
   return (
     <>
       <div className={classes.form}>
-        <h3>Inbox</h3>
+        <h3>Inbox {unreadMailCount > 0 && <span>({unreadMailCount})</span>}</h3>
         {selectedMail ? (
           <MailInbox mail={selectedMail} onBack={handleBack} />
         ) : (
           inboxMail.map((mail) => (
-            <div className={classes.card} key={mail.key}>
+            <div
+              className={`${classes.card} ${
+                mail.read ? classes.read : classes.unread
+              }`}
+              key={mail.key}
+            >
               <h4>{mail.subject}</h4>
               <p>From: {mail.sender}</p>
               <div className={classes.buttons}>
