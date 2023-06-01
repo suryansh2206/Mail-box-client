@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import classes from "./EmailForm.module.css";
 import { getUsername } from "../../helper";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +16,10 @@ const EmailForm = () => {
   const to = useRef();
   const subject = useRef();
   const message = useRef();
+
+  useEffect(() => {
+    dispatch(uiActions.openEmailForm());
+  }, [dispatch]);
 
   const submitHandler = (event) => {
     event.preventDefault();

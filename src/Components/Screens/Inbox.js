@@ -58,6 +58,7 @@ const Inbox = () => {
   return (
     <>
       <div className={classes.form}>
+        <h3>Inbox</h3>
         {selectedMail ? (
           <MailInbox mail={selectedMail} onBack={handleBack} />
         ) : (

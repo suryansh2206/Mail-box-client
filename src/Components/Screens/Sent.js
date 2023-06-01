@@ -58,6 +58,7 @@ const Sent = () => {
   return (
     <>
       <div className={classes.form}>
+        <h3>Sent</h3>
         {selectedMail ? (
           <MailSent mail={selectedMail} onBack={handleBack} />
         ) : (
