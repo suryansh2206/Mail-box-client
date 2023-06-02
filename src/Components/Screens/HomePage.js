@@ -2,7 +2,6 @@ import { Fragment } from "react";
 import classes from "./HomePage.module.css";
 import { useNavigate } from "react-router-dom";
 import EmailForm from "./EmailForm";
-import { getUsername } from "../../helper";
 
 const HomePage = () => {
   const navigate = useNavigate();

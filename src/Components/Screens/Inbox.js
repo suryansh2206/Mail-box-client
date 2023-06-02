@@ -10,6 +10,19 @@ const Inbox = () => {
   const user = getUsername(username);
 
   useEffect(() => {
+    // Fetch initial inbox data
+    fetchInboxMail();
+
+    // Set up interval for real-time updates
+    const interval = setInterval(fetchInboxMail, 2000);
+
+    // Cleanup function to clear the interval when component unmounts
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  const fetchInboxMail = () => {
     fetch(
       `https://mail-box-client-93081-default-rtdb.firebaseio.com/${user}/received/.json`
     )
@@ -24,7 +37,7 @@ const Inbox = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  };
 
   const openMailHandler = (mail) => {
     setSelectedMail(mail);
