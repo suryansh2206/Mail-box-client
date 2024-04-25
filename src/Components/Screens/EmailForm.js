@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from "../../Store/ui-slice";
 import Inbox from "./Inbox";
 import Sent from "./Sent";
+import Draft from "./Draft";
 
 const EmailForm = () => {
   let username = localStorage.getItem("email") || " ";
@@ -12,6 +13,7 @@ const EmailForm = () => {
   const showForm = useSelector((state) => state.ui.emailForm);
   const showInbox = useSelector((state) => state.ui.inboxShow);
   const showSent = useSelector((state) => state.ui.sentShow);
+  const showDraft = useSelector((state) => state.ui.draftShow);
   const dispatch = useDispatch();
   const to = useRef();
   const subject = useRef();
@@ -84,18 +86,32 @@ const EmailForm = () => {
     dispatch(uiActions.openEmailForm());
     dispatch(uiActions.closeInbox());
     dispatch(uiActions.closeSent());
+    dispatch(uiActions.closeDraft());
   };
 
   const toggleInboxHandler = () => {
     dispatch(uiActions.openInbox());
     dispatch(uiActions.closeEmailForm());
     dispatch(uiActions.closeSent());
+    dispatch(uiActions.closeDraft());
   };
 
   const toggleSentHandler = () => {
     dispatch(uiActions.openSent());
     dispatch(uiActions.closeInbox());
     dispatch(uiActions.closeEmailForm());
+    dispatch(uiActions.closeDraft());
+  };
+
+  const toggleDraftHandler = () => {
+    dispatch(uiActions.openDraft());
+    dispatch(uiActions.closeEmailForm());
+    dispatch(uiActions.closeInbox());
+    dispatch(uiActions.closeSent());
+  };
+
+  const saveToDraftHandler = (event) => {
+    event.preventDefault();
   };
 
   return (
@@ -105,27 +121,32 @@ const EmailForm = () => {
           <button onClick={toggleEmailFormHandler}>Compose</button>
           <button onClick={toggleInboxHandler}>Inbox</button>
           <button onClick={toggleSentHandler}>Sent</button>
+          <button onClick={toggleDraftHandler}>Draft</button>
         </div>
-        {showForm && !showInbox && !showSent && (
-          <form className={classes.form} onSubmit={submitHandler}>
-            <input
-              type="text"
-              placeholder="To:"
-              className={classes.input}
-              ref={to}
-            />
-            <input
-              type="text"
-              placeholder="Subject:"
-              className={classes.input}
-              ref={subject}
-            />
-            <textarea placeholder="Your message" ref={message}></textarea>
-            <button>Send</button>
-          </form>
+        {showForm && !showInbox && !showSent && !showDraft && (
+          <>
+            <form className={classes.form} onSubmit={submitHandler}>
+              <input
+                type="text"
+                placeholder="To:"
+                className={classes.input}
+                ref={to}
+              />
+              <input
+                type="text"
+                placeholder="Subject:"
+                className={classes.input}
+                ref={subject}
+              />
+              <textarea placeholder="Your message" ref={message}></textarea>
+              <button>Send</button>
+              <button onClick={saveToDraftHandler}>Save to Draft</button>
+            </form>
+          </>
         )}
-        {showInbox && !showForm && !showSent && <Inbox />}
-        {showSent && !showInbox && !showForm && <Sent />}
+        {showInbox && !showForm && !showSent && !showDraft && <Inbox />}
+        {showSent && !showInbox && !showForm && !showDraft && <Sent />}
+        {showDraft && !showInbox && !showForm && !showSent && <Draft />}
       </div>
     </>
   );
