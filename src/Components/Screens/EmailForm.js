@@ -34,7 +34,7 @@ const EmailForm = () => {
       message: enteredMessage,
     };
     fetch(
-      `https://mail-box-client-93081-default-rtdb.firebaseio.com/${user}/sent/.json`,
+      `https://mail-box-client-93081-default-rtdb.firebaseio.com//${user}/sent/.json`,
       {
         method: "POST",
         body: JSON.stringify(email),
@@ -64,7 +64,7 @@ const EmailForm = () => {
       isOpen: false,
     };
     fetch(
-      `https://mail-box-client-93081-default-rtdb.firebaseio.com/${userReceived}/received/.json`,
+      `https://mail-box-client-93081-default-rtdb.firebaseio.com//${userReceived}/received/.json`,
       {
         method: "POST",
         body: JSON.stringify(received_mail),
@@ -112,6 +112,67 @@ const EmailForm = () => {
 
   const saveToDraftHandler = (event) => {
     event.preventDefault();
+
+    const enteredTo = to.current.value;
+    const enteredSubject = subject.current.value;
+    const enteredMessage = message.current.value;
+
+    const draftEmail = {
+      to: enteredTo,
+      subject: enteredSubject,
+      message: enteredMessage,
+      isDraft: true, // Indicate that this is a draft
+    };
+
+    // Save the draft email
+    fetch(
+      `https://mail-box-client-93081-default-rtdb.firebaseio.com/${user}/drafts/.json`,
+      {
+        method: "POST",
+        body: JSON.stringify(draftEmail),
+      }
+    )
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Something went wrong!");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Email saved to Drafts:", data);
+        alert("Email saved to Drafts");
+
+        to.current.value = "";
+        subject.current.value = "";
+        message.current.value = "";
+        // Fetch drafts after successfully saving a new draft
+        fetchDrafts();
+      })
+      .catch((err) => {
+        console.error("Error saving email to Drafts:", err);
+        alert("Error saving email to Drafts");
+      });
+  };
+
+  // Function to fetch draft emails from Firebase
+  const fetchDrafts = () => {
+    fetch(
+      `https://mail-box-client-93081-default-rtdb.firebaseio.com/${user}/drafts/.json`
+    )
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch drafts");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        // Process fetched draft emails
+        // Here, you can update the state or perform any other action to display the draft emails
+        console.log("Fetched drafts:", data);
+      })
+      .catch((err) => {
+        console.error("Error fetching drafts:", err);
+      });
   };
 
   return (
