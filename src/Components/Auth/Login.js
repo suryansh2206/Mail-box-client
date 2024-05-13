@@ -90,6 +90,11 @@ const Login = () => {
           </p>
         </div>
       </div>
+      <div className={classes.guestLogin}>
+        <h3>Guest Login</h3>
+        <p>Email: guest@example.com</p>
+        <p>Password: guestpassword</p>
+      </div>
     </div>
   );
 };
